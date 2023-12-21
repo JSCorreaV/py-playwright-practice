@@ -1,33 +1,42 @@
-def getHomeButton(page):
-    return page.get_by_test_id("home-link-button")
+from pages.BasePage import BasePageClass
 
-def getUserTextField(page):
-    return page.get_by_test_id("form-input--alias-textfield-input")
+class LoginPageClass(BasePageClass):
 
-def getContinueButton(page):
-    return page.get_by_test_id("primary-button-button")
+    url = "https://www.latamairlines.com/co/es/login"
 
-def getCreateAccountButton(page):
-    return page.get_by_test_id("secondary-button-button")
+    def __init__(self, page):
+        super()
+        self.page = page
+    
+    def visit(self):
+        super().visit(self.url)
 
-def getRecoveryAccessButton(page):
-    return page.locator("#link--register")
+    def getHomeButton(self):
+        return self.page.get_by_test_id("home-link-button")
 
-def typeUser(page, user):
-    getUserTextField(page).fill(user)
+    def getUserTextField(self):
+        return self.page.get_by_test_id("form-input--alias-textfield-input")
 
-def typePassword(page, password):
-    page.get_by_test_id("form-input--password-textfield-input").fill(password)
+    def getContinueButton(self):
+        return self.page.get_by_test_id("primary-button-button")
 
-def clickContinueButton(page):
-    getContinueButton(page).click()
+    def getCreateAccountButton(self):
+        return self.page.get_by_test_id("secondary-button-button")
 
-def typeUserAndPassword(page, user, password):
-    typeUser(page, user)
-    clickContinueButton(page)
-    typePassword(page, password)
-    clickContinueButton(page)
+    def getRecoveryAccessButton(self):
+        return self.page.locator("#link--register")
 
-def visit(page, url = "https://www.latamairlines.com/co/es/login"):
-    page.goto(url)
-    page.wait_for_load_state()
+    def typeUser(self, user):
+        self.getUserTextField().fill(user)
+
+    def typePassword(self, password):
+        self.page.get_by_test_id("form-input--password-textfield-input").fill(password)
+
+    def clickContinueButton(self):
+        self.page.getContinueButton().click()
+
+    def typeUserAndPassword(self, user, password):
+        self.typeUser(user)
+        self.clickContinueButton()
+        self.typePassword(password)
+        self.clickContinueButton()
