@@ -44,6 +44,7 @@ playwright show-trace [trackingFileName]
 ## Conclusion
 
 This tutorial provides a basic introduction to UI testing with Playwright in Python. For more information, see the [Playwright documentation](https://playwright.dev/python/docs/intro).
+If you need to include timeouts, include them as constant in tests/utils/Constansts.py and then import them where you require.
 
 ## MIT License
 
