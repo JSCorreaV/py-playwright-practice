@@ -22,11 +22,19 @@ playwright install
 
 ## Running the Tests
 
-If the test include the tracing recorder "context.tracing.start(screenshots=True, snapshots=True)", to run the tests, use the following command:
+To run the tests, use the following command:
 
 ```bash
 pytest -v -s
 ```
+
+To run only a specific test, use the following command:
+
+```bash
+pytest -v -s [testName]
+```
+
+[testName] could be the test file without .py, or the name next to "def" inside each testFile.py
 
 By default, tests with the tracing recorder command open a browser (headless = False) in the browser definition browser = playwright.chromium.launch(headless = False).
 
@@ -35,6 +43,8 @@ To watch tracking file executing, use the following command:
 ```bash
 playwright show-trace [trackingFileName]
 ```
+
+[trackingFileName] was specified in each test in context.tracing.stop(path = [trackingFileName])
 
 ## Conclusion
 
