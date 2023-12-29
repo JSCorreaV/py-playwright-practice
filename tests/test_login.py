@@ -8,7 +8,11 @@ from pages.LoginPage import LoginPageClass
 jsonFileLogin= open('tests/fixtures/loginData.json')
 loginData = json.load(jsonFileLogin)
 
-def test_login_default_view(page: pw.Page):
+def test_login_default_view(playwright: pw.Playwright):
+    browser = playwright.chromium.launch(headless = False)
+    context = browser.new_context()
+    page = context.new_page()
+    context.tracing.start(screenshots=True, snapshots=True)
     loginPage = LoginPageClass(page)
 
     loginPage.visit()
@@ -26,8 +30,22 @@ def test_login_default_view(page: pw.Page):
 
     pw.expect(loginPage.getRecoveryAccessButton()).to_be_enabled()
 
-# def test_login(page: pw.Page):
-#     indexPage.visit(page)
-#     indexPage.clickLoginButton(page)
+    context.tracing.stop(path = "test_login_trace.zip")
+
+    browser.close()
+
+# def test_login(playwright: pw.Playwright):
+#     browser = playwright.chromium.launch(headless = False)
+#     context = browser.new_context()
+#     page = context.new_page()
+#     context.tracing.start(screenshots=True, snapshots=True)
+#     loginPage = LoginPageClass(page)
+
+#     indexPage.visit()
+#     indexPage.clickLoginButton()
 #     pw.expect(page).not_to_have_url("https://www.latamairlines.com/co/es")
-#     loginPage.typeUserAndPassword(page, loginData["user"], loginData["password"])
+#     loginPage.typeUserAndPassword(loginData["user"], loginData["password"])
+
+#     context.tracing.stop(path = "test_login_trace.zip")
+    
+#     browser.close()

@@ -1,4 +1,4 @@
-#pytest tests/test_login.py
+#pytest tests/test_search_a_flight.py
 #playwright show-trace test_search_a_flight_trace.zip
 
 import json
@@ -37,3 +37,5 @@ def test_search_a_flight(playwright: pw.Playwright):
         flightsOfferedPage.goToSelectSeats()
     
     context.tracing.stop(path = "test_search_a_flight_trace.zip")
+
+    browser.close()

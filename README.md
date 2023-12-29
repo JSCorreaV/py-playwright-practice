@@ -29,11 +29,6 @@ pytest -v -s
 ```
 
 By default, tests with the tracing recorder command open a browser (headless = False) in the browser definition browser = playwright.chromium.launch(headless = False).
-But if the test doesn't include the tracing recorder, to run the tests, use the following command to activate tracking recording and open the browser:
-
-```bash
-pytest -v -s --headed --tracing on
-```
 
 To watch tracking file executing, use the following command:
 

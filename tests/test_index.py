@@ -1,13 +1,20 @@
 import playwright.sync_api as pw
 
-import pages.IndexPage as indexPage
+from pages.IndexPage import IndexPageClass
 
-def test_index(page: pw.Page):
+def test_index(playwright: pw.Playwright):
+    browser = playwright.chromium.launch(headless = False)
+    context = browser.new_context()
+    page = context.new_page()
+    context.tracing.start(screenshots=True, snapshots=True)
 
-    indexPage.visit(page)
-    indexPage.clickLoginButton(page)
+    indexPage = IndexPageClass(page)
+
+    indexPage.visit()
+    indexPage.clickLoginButton()
     pw.expect(page).not_to_have_url("https://www.latamairlines.com/co/es")
-    #browser.close()
 
-    #playwright.stop()
+    context.tracing.stop(path = "test_login_trace.zip")
+
+    browser.close()
 

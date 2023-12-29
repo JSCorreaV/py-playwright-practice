@@ -1,5 +1,7 @@
 from datetime import date, timedelta
 from pages.BasePage import BasePageClass
+from utils.Constansts import Timeouts
+import playwright.sync_api as pw
 
 class IndexPageClass(BasePageClass):
     
@@ -28,10 +30,13 @@ class IndexPageClass(BasePageClass):
 
     def selectAmountOfPassengers(self, passengers):
         self.page.locator("[aria-owns=lstSearchBoxPassenger]").click()
+        
         for adults in range(passengers["adults"]):
             self.page.locator("[data-test=add-passenger-body-adult-section-plus-button]").click()
+
         for children in range(passengers["children"]):
             self.page.locator("[data-test=add-passenger-body-children-section-plus-button]").click()
+
         for infant in range(passengers["infant"]):
             self.page.locator("[data-test=add-passenger-body-infant-section-plus-button]").click()
 
@@ -54,25 +59,34 @@ class IndexPageClass(BasePageClass):
         self.page.get_by_role("option", name = destination).click()
 
     def goToDate(self, objectiveDate):
+        dateUnformated = objectiveDate["dateUnformated"]
+        objectiveDateLabel = objectiveDate["label"]
+        objectiveDateLocator = '[aria-label="' + objectiveDateLabel+ '"]'
+        nextMonthLocator = '[aria-label="Avanza al mes de"]'
+
         actualDate = date.today()
-        [futureYear, futureMonth, futureDay] = objectiveDate
+        [futureYear, futureMonth, futureDay] = dateUnformated
         futureDate = date(futureYear, futureMonth, futureDay)
         futureDays = (futureDate - actualDate).days
-        futureMonths = (actualDate + timedelta(days = futureDays)).month
+        futureMonths = (actualDate + timedelta(days = futureDays)).month + 1
         for x in range(futureMonths):
-            self.page.locator('[aria-label="Avanza al mes de"]').click()
+            try:
+                pw.expect(self.page.locator(objectiveDateLocator)).to_be_visible(timeout = Timeouts["SMALL_TIMEOUT"])
+                return
+            except:
+                self.page.locator(nextMonthLocator).click()
 
     def selectDates(self, dates, tripType):
-        departureDate = dates["departure"]["dateUnformated"]
+        departureDate = dates["departure"]
 
         self.page.locator("#departureDate").click()
         self.goToDate(departureDate)
-        self.page.locator('[aria-label="' + dates["departure"]["label"]+ '"]').click()
+        self.page.locator('[aria-label="' + departureDate["label"]+ '"]').click()
         if tripType == "Ida y Vuelta":
-            arrivalDate = dates["arrival"]["dateUnformated"]
+            arrivalDate = dates["arrival"]
             self.goToDate(arrivalDate)
-            self.page.locator('[aria-label="Seleccionado como fecha de ida. ' + dates["departure"]["label"] + '"]').click()
-            self.page.locator('[aria-label="Seleccionado como fecha vuelta. ' + dates["arrival"]["label"] + '"]').click()
+            self.page.locator('[aria-label="Seleccionado como fecha de ida. ' + departureDate["label"] + '"]').click()
+            self.page.locator('[aria-label="Seleccionado como fecha vuelta. ' + arrivalDate["label"] + '"]').click()
 
     def clickSearchButton(self):
         self.page.locator("#btnSearchCTA").click()
