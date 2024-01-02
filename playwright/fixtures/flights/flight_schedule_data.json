@@ -1,0 +1,12 @@
+{
+  "going_date": "lunes, 7 de octubre de 2024",
+  "return_date": "domingo, 20 de octubre de 2024",
+  "origin": "Medellín",
+  "destination": "Amsterdam",
+  "dropdown_options": {
+    "origin": "Medellín, MDE - Colombia",
+    "destination": "Amsterdam, AMS - Holanda"
+  },
+  "seat_number": "3A",
+  "no_seats_messages": ["No puedes elegir asiento en este vuelo", "Este vuelo es operado por Iberia, comunícate con ellos o te asignarán uno aleatorio."]
+}
